@@ -1,5 +1,6 @@
 package com.skykimpro.chingu.account;
 
+import com.skykimpro.chingu.domain.Account;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.postgresql.hostchooser.HostRequirement.any;
@@ -58,14 +60,16 @@ class AccountControllerTest {
     @Test
     void signUpSubmit_with_correct_input() throws Exception {
         mockMvc.perform(post("/sign-up")
-                .param("nickname","kja")
+                .param("nickname", "kja")
                 .param("email", "akjkjkja@cmd.ccc")
-                .param("password","12345678")
+                .param("password", "12345678")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
 
-        assertTrue(accountRepository.existsByEmail("akjkjkja@cmd.ccc"));
+        Account account = accountRepository.findByEmail("akjkjkja@cmd.ccc");
+        assertNotNull(account);
+        assertNotEquals(account.getPassword(), "12345678");
         then(javaMailSender).should().send(any(SimpleMailMessage.class));
     }
 }
