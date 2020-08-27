@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
     <meta charset="UTF-8">
-    <title>StudyOlle</title>
+    <title>Chingu</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
 <body class="bg-light">
@@ -41,7 +41,7 @@
         <h2>계정 만들기</h2>
     </div>
     <div class="row justify-content-center">
-        <form class="needs-validation col-sm-6" action="#"
+        <form class="needs-validation col-sm-6" action="/sign-up"
               th:action="@{/sign-up}" th:object="${signUpForm}" method="post" novalidate>
             <div class="form-group">
                 <label for="nickname">닉네임</label>
