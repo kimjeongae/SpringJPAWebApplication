@@ -45,7 +45,7 @@ public class AccountService {
         return newAccount;
     }
 
-    private void sendSignUpConfirmEmail(Account newAccount) {
+    public void sendSignUpConfirmEmail(Account newAccount) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(newAccount.getEmail());
         mailMessage.setSubject("Chingu 회원 가입 인증");
