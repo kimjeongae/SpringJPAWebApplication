@@ -3,6 +3,7 @@ package com.skykimpro.chingu.account;
 import com.skykimpro.chingu.domain.Account;
 import com.skykimpro.chingu.account.SignUpForm;
 import com.skykimpro.chingu.account.SignUpFormValidator;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
