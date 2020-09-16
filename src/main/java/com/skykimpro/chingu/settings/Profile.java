@@ -2,8 +2,10 @@ package com.skykimpro.chingu.settings;
 
 import com.skykimpro.chingu.domain.Account;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor // 기본 생성자 생성
 public class Profile {
 
     private String bio;
