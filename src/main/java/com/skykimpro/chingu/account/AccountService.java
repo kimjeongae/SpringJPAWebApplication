@@ -1,6 +1,7 @@
 package com.skykimpro.chingu.account;
 
 import com.skykimpro.chingu.domain.Account;
+import com.skykimpro.chingu.settings.Notifications;
 import com.skykimpro.chingu.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -96,6 +97,16 @@ public class AccountService implements UserDetailsService {
 
     public void updatePassword(Account account, String newPassword) {
         account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account); // merge
+    }
+
+    public void updateNotificatons(Account account, Notifications notifications) {
+        account.setStudyCreatedByEmail(notifications.isStudyCreatedByEmail());
+        account.setStudyCreatedByWeb(notifications.isStudyCreatedByWeb());
+        account.setStudyUpdatedByWeb(notifications.isStudyUpdatedByWeb());
+        account.setStudyUpdatedByEmail(notifications.isStudyUpdatedByEmail());
+        account.setStudyEnrollmentResultByEmail(notifications.isStudyEnrollmentResultByEmail());
+        account.setStudyEnrollmentResultByWeb(notifications.isStudyEnrollmentResultByWeb());
         accountRepository.save(account); // merge
     }
 }
