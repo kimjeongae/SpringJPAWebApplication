@@ -5,6 +5,7 @@ import com.skykimpro.chingu.account.CurrentUser;
 import com.skykimpro.chingu.domain.Account;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.modelmapper.ModelMapper;
 
 import javax.validation.Valid;
 
@@ -28,19 +30,18 @@ public class SettingsController {
 
     static final String SETTING_PROFILE_VIEW_NAME = "settings/profile";
     static final String SETTING_PROFILE_URL = "/settings/profile";
-
     static final String SETTING_PASSWORD_VIEW_NAME = "settings/password";
     static final String SETTING_PASSWORD_URL = "/settings/password";
-
     static final String SETTING_NOTIFICATIONS_VIEW_NAME = "settings/notifications";
     static final String SETTING_NOTIFICATIONS_URL = "/settings/notifications";
 
     private final AccountService accountService;
+    private final ModelMapper modelMapper;
 
     @GetMapping(SETTING_PROFILE_URL)
     public String profileUpdateForm(@CurrentUser Account account, Model model){
         model.addAttribute(account);
-        model.addAttribute(new Profile(account));
+        model.addAttribute(modelMapper.map(account, Profile.class));
         return SETTING_PROFILE_VIEW_NAME;
     }
 
@@ -80,7 +81,7 @@ public class SettingsController {
     @GetMapping(SETTING_NOTIFICATIONS_URL)
     public String updateNotificatonForm(@CurrentUser Account account, Model model){
         model.addAttribute(account);
-        model.addAttribute(new Notifications(account));
+        model.addAttribute(modelMapper.map(account, Notifications.class));
         return SETTING_NOTIFICATIONS_VIEW_NAME;
     }
 
