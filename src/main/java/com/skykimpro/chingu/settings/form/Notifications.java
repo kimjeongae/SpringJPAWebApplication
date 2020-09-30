@@ -1,4 +1,4 @@
-package com.skykimpro.chingu.settings;
+package com.skykimpro.chingu.settings.form;
 
 import com.skykimpro.chingu.domain.Account;
 import lombok.Data;

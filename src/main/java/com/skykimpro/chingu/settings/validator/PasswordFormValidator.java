@@ -1,5 +1,6 @@
-package com.skykimpro.chingu.settings;
+package com.skykimpro.chingu.settings.validator;
 
+import com.skykimpro.chingu.settings.form.PasswordForm;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

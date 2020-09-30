@@ -1,4 +1,4 @@
-package com.skykimpro.chingu.settings;
+package com.skykimpro.chingu.settings.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
