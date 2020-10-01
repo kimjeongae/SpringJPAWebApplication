@@ -1,26 +1,26 @@
 package com.skykimpro.chingu.settings;
 
+import com.skykimpro.chingu.Tag.TagRepository;
 import com.skykimpro.chingu.account.AccountService;
 import com.skykimpro.chingu.account.CurrentUser;
 import com.skykimpro.chingu.domain.Account;
-import com.skykimpro.chingu.settings.form.NicknameForm;
-import com.skykimpro.chingu.settings.form.Notifications;
-import com.skykimpro.chingu.settings.form.PasswordForm;
-import com.skykimpro.chingu.settings.form.Profile;
+import com.skykimpro.chingu.domain.Tag;
+import com.skykimpro.chingu.settings.form.*;
 import com.skykimpro.chingu.settings.validator.NicknameValidator;
 import com.skykimpro.chingu.settings.validator.PasswordFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,10 +34,13 @@ public class SettingsController {
     static final String SETTING_NOTIFICATIONS_URL = "/" + SETTING_NOTIFICATIONS_VIEW_NAME;
     static final String SETTING_ACCOUNT_VIEW_NAME = "settings/account";
     static final String SETTING_ACCOUNT_URL = "/" + SETTING_ACCOUNT_VIEW_NAME;
+    static final String SETTING_TAGS_VIEW_NAME = "settings/tags";
+    static final String SETTING_TAGS_URL = "/" + SETTING_TAGS_VIEW_NAME;
 
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final NicknameValidator nicknameValidator;
+    private final TagRepository tagRepository;
 
     @InitBinder("passwordForm")
     public void passwordFormInitBinder(WebDataBinder webDataBinder){
@@ -127,5 +130,26 @@ public class SettingsController {
         accountService.updateNickname(account, nicknameForm.getNickname());
         attributes.addFlashAttribute("message","닉네임을 수정했습니다.");
         return "redirect:" + SETTING_ACCOUNT_URL;
+    }
+
+    @GetMapping(SETTING_TAGS_URL)
+    public String updateTags(@CurrentUser Account account, Model model){
+        model.addAttribute(account);
+        Set<Tag> tags = accountService.getTags(account);
+        model.addAttribute("tags", tags.stream().map(Tag::getTitle).collect(Collectors.toList()));
+        return SETTING_TAGS_VIEW_NAME;
+    }
+
+    @PostMapping("/settings/tags/add")
+    @ResponseBody
+    public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm){
+        String title = tagForm.getTagTitle();
+        Tag tag = tagRepository.findByTitle(title);
+        if(tag == null){
+            tag = tagRepository.save(Tag.builder().title(tagForm.getTagTitle()).build());
+        }
+
+        accountService.addTag(account, tag);
+        return ResponseEntity.ok().build();
     }
 }
