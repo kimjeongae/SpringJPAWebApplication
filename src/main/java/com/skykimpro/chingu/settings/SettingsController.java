@@ -2,7 +2,7 @@ package com.skykimpro.chingu.settings;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.skykimpro.chingu.Tag.TagRepository;
+import com.skykimpro.chingu.tag.TagRepository;
 import com.skykimpro.chingu.account.AccountService;
 import com.skykimpro.chingu.account.CurrentUser;
 import com.skykimpro.chingu.domain.Account;

@@ -1,4 +1,4 @@
-package com.skykimpro.chingu.Tag;
+package com.skykimpro.chingu.tag;
 
 import com.skykimpro.chingu.domain.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;

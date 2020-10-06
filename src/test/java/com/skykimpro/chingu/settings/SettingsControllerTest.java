@@ -1,7 +1,7 @@
 package com.skykimpro.chingu.settings;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.skykimpro.chingu.Tag.TagRepository;
+import com.skykimpro.chingu.tag.TagRepository;
 import com.skykimpro.chingu.WithAccount;
 import com.skykimpro.chingu.account.AccountRepository;
 import com.skykimpro.chingu.account.AccountService;
