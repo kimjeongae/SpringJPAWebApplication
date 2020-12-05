@@ -1,7 +1,8 @@
 package com.skykimpro.chingu.domain;
 
-import lombok.EqualsAndHashCode;
+
 import lombok.*;
+import javax.persistence.Id;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,8 +11,12 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Getter @Setter @EqualsAndHashCode(of = "id")
-@Builder @AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of = "id")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account {
 
     @Id
@@ -40,7 +45,8 @@ public class Account {
 
     private String location;
 
-    @Lob @Basic(fetch = FetchType.EAGER)
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
     private String profileImage;
 
     private boolean studyCreatedByEmail;
