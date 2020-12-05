@@ -11,6 +11,7 @@ import com.skykimpro.chingu.domain.Tag;
 import com.skykimpro.chingu.settings.form.*;
 import com.skykimpro.chingu.settings.validator.NicknameValidator;
 import com.skykimpro.chingu.settings.validator.PasswordFormValidator;
+import com.skykimpro.chingu.tag.TagService;
 import com.skykimpro.chingu.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -44,6 +45,7 @@ public class SettingsController {
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final NicknameValidator nicknameValidator;
+    private final TagService tagService;
     private final TagRepository tagRepository;
     private final ZoneRepository zoneRepository;
     private final ObjectMapper objectMapper;
@@ -153,11 +155,7 @@ public class SettingsController {
     @ResponseBody
     public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm){
         String title = tagForm.getTagTitle();
-        Tag tag = tagRepository.findByTitle(title);
-        if(tag == null){
-            tag = tagRepository.save(Tag.builder().title(tagForm.getTagTitle()).build());
-        }
-
+        Tag tag = tagService.findOrCreateNew(tagForm.getTagTitle());
         accountService.addTag(account, tag);
         return ResponseEntity.ok().build();
     }
