@@ -80,4 +80,8 @@ public class Account {
     public boolean canSendConfirmEmail() {
         return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusMinutes(10));
     }
+
+    public boolean isManagerOf(Study study) {
+        return study.getManagers().contains(this);
+    }
 }
