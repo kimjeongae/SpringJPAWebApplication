@@ -40,6 +40,60 @@ public class StudySettingController {
     private final ZoneRepository zoneRepository;
     private final ObjectMapper objectMapper;
 
+    @GetMapping("/study")
+    public String studySettingForm(@CurrentUser Account account, @PathVariable String path, Model model){
+        Study study = studyService.getStudyToUpdate(account, path);
+        model.addAttribute(account);
+        model.addAttribute(study);
+        return "study/settings/study";
+    }
+
+    @PostMapping("/study/publish")
+    public String publishStudy(@CurrentUser Account account, @PathVariable String path,
+                               RedirectAttributes attributes) {
+        Study study = studyService.getStudyToUpdateStatus(account, path);
+        studyService.publish(study);
+        attributes.addFlashAttribute("message", "동아리를 공개했습니다.");
+        return "redirect:/study/" + study.getEncodedPath() + "/settings/study";
+    }
+
+    @PostMapping("/study/close")
+    public String closeStudy(@CurrentUser Account account, @PathVariable String path,
+                             RedirectAttributes attributes) {
+        Study study = studyService.getStudyToUpdateStatus(account, path);
+        studyService.close(study);
+        attributes.addFlashAttribute("message", "동아리를 종료했습니다.");
+        return "redirect:/study/" + study.getEncodedPath() + "/settings/study";
+    }
+
+    @PostMapping("/recruit/start")
+    public String startRecruit(@CurrentUser Account account, @PathVariable String path, Model model,
+                               RedirectAttributes attributes) {
+        Study study = studyService.getStudyToUpdateStatus(account, path);
+        if (!study.canUpdateRecruiting()) {
+            attributes.addFlashAttribute("message", "1시간 안에 인원 모집 설정을 여러번 변경할 수 없습니다.");
+            return "redirect:/study/" + study.getEncodedPath() + "/settings/study";
+        }
+
+        studyService.startRecruit(study);
+        attributes.addFlashAttribute("message", "인원 모집을 시작합니다.");
+        return "redirect:/study/" + study.getEncodedPath() + "/settings/study";
+    }
+
+    @PostMapping("/recruit/stop")
+    public String stopRecruit(@CurrentUser Account account, @PathVariable String path, Model model,
+                              RedirectAttributes attributes) {
+        Study study = studyService.getStudyToUpdate(account, path);
+        if (!study.canUpdateRecruiting()) {
+            attributes.addFlashAttribute("message", "1시간 안에 인원 모집 설정을 여러번 변경할 수 없습니다.");
+            return "redirect:/study/" + study.getEncodedPath() + "/settings/study";
+        }
+
+        studyService.stopRecruit(study);
+        attributes.addFlashAttribute("message", "인원 모집을 종료합니다.");
+        return "redirect:/study/" + study.getEncodedPath() + "/settings/study";
+    }
+
     @GetMapping("/tags")
     public String studyTagsForm(@CurrentUser Account account, @PathVariable String path, Model model)
             throws JsonProcessingException {
@@ -133,7 +187,7 @@ public class StudySettingController {
                                    String image, RedirectAttributes attributes) {
         Study study = studyService.getStudyToUpdate(account, path);
         studyService.updateStudyImage(study, image);
-        attributes.addFlashAttribute("message", "스터디 이미지를 수정했습니다.");
+        attributes.addFlashAttribute("message", "동아리 이미지를 수정했습니다.");
         return "redirect:/study/" + study.getEncodedPath() + "/settings/banner";
     }
 
